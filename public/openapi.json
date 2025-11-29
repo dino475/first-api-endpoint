@@ -1,0 +1,174 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Weather API",
+    "version": "1.0.0",
+    "description": "A simple weather API for testing Mintlify personalization",
+    "contact": {
+      "name": "API Support"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Development server"
+    },
+    {
+      "url": "https://your-app.vercel.app",
+      "description": "Production server (update this URL after deployment)"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Enter your bearer token (will be replaced with Clerk later)"
+      }
+    },
+    "schemas": {
+      "WeatherResponse": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string",
+            "example": "San Francisco"
+          },
+          "country": {
+            "type": "string",
+            "example": "USA"
+          },
+          "temperature": {
+            "type": "object",
+            "properties": {
+              "current": {
+                "type": "number",
+                "example": 65
+              },
+              "feelsLike": {
+                "type": "number",
+                "example": 63
+              },
+              "unit": {
+                "type": "string",
+                "example": "fahrenheit"
+              }
+            }
+          },
+          "condition": {
+            "type": "string",
+            "example": "Partly Cloudy"
+          },
+          "humidity": {
+            "type": "number",
+            "example": 72
+          },
+          "windSpeed": {
+            "type": "number",
+            "example": 8
+          },
+          "pressure": {
+            "type": "number",
+            "example": 1013
+          },
+          "visibility": {
+            "type": "number",
+            "example": 10
+          },
+          "uvIndex": {
+            "type": "number",
+            "example": 3
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-11-29T10:30:00Z"
+          },
+          "forecast": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "day": {
+                  "type": "string",
+                  "example": "Today"
+                },
+                "high": {
+                  "type": "number",
+                  "example": 68
+                },
+                "low": {
+                  "type": "number",
+                  "example": 58
+                },
+                "condition": {
+                  "type": "string",
+                  "example": "Partly Cloudy"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/weather": {
+      "get": {
+        "summary": "Get weather data for a city",
+        "description": "Returns mock weather data including temperature, conditions, and forecast.",
+        "tags": ["Weather"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "city",
+            "schema": {
+              "type": "string",
+              "default": "San Francisco"
+            },
+            "description": "City name to get weather for",
+            "example": "Boston"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with weather data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeatherResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Method not allowed",
+                  "message": "Only GET requests are supported"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
