@@ -10,12 +10,12 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000",
-      "description": "Development server"
+      "url": "https://first-api-endpoint.vercel.app",
+      "description": "Production server"
     },
     {
-      "url": "https://your-app.vercel.app",
-      "description": "Production server (update this URL after deployment)"
+      "url": "http://localhost:3000",
+      "description": "Development server"
     }
   ],
   "components": {
