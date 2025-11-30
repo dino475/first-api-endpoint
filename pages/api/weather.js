@@ -117,10 +117,40 @@ export default function handler(req, res) {
     });
   }
 
-  // TODO: Add Clerk authentication here
-  // Example: const { userId } = getAuth(req);
-  // if (!userId) return res.status(401).json({ error: 'Unauthorized' });
+  // Bearer token authentication
+  const authHeader = req.headers['authorization'];
 
+  if (!authHeader) {
+    return res.status(401).json({
+      error: 'Unauthorized',
+      message: 'Missing Authorization header'
+    });
+  }
+
+  // Extract the token (format: "Bearer TOKEN_HERE")
+  const parts = authHeader.split(' ');
+
+  if (parts.length !== 2 || parts[0] !== 'Bearer') {
+    return res.status(401).json({
+      error: 'Unauthorized',
+      message: 'Invalid Authorization header format. Expected: Bearer <token>'
+    });
+  }
+
+  const token = parts[1];
+
+  // For testing: accept a hardcoded token
+  // In production, this would validate against a database
+  const validToken = process.env.TEST_API_KEY || 'sk_test_12345';
+
+  if (token !== validToken) {
+    return res.status(401).json({
+      error: 'Unauthorized',
+      message: 'Invalid API key'
+    });
+  }
+
+  // Token is valid, continue to endpoint
   // Get city from query parameter, default to San Francisco
   const city = req.query.city || 'San Francisco';
 

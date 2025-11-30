@@ -124,12 +124,22 @@
       }
     }
   },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
   "paths": {
     "/api/weather": {
       "get": {
         "summary": "Get weather data for a city",
-        "description": "Returns mock weather data including temperature, conditions, and forecast.",
+        "description": "Returns mock weather data including temperature, conditions, and forecast. Requires Bearer token authentication.",
         "tags": ["Weather"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "query",
@@ -149,6 +159,20 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/WeatherResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Missing or invalid bearer token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid API key"
                 }
               }
             }
