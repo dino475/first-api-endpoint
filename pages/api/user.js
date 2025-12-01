@@ -3,6 +3,17 @@
 // This just returns hardcoded API key to test if Mintlify prefilling works
 
 export default function handler(req, res) {
+  // Set CORS headers to allow requests from docs.deansliney.com
+  res.setHeader('Access-Control-Allow-Origin', 'https://docs.deansliney.com');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+  // Handle preflight OPTIONS request
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   // Only allow GET requests
   if (req.method !== 'GET') {
     return res.status(405).json({
